@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[LRU Cache]]></title>
+    <url>%2F2019%2F07%2FLRUCache%2F</url>
+    <content type="text"><![CDATA[LeetCode题目：LRU缓存机制(LRU Cache) 个人leetcode做题记录 方法一实现一个增删改查时间复杂度都为O(1)的队列；用双向链表存储缓存，实现对缓存的增删改；用Map记录缓存，实现对缓存的查。 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990public class LRUCache &#123; //双向链表(doubly-linked list) private class DNode &#123; int key; int value; DNode prev; DNode next; DNode(int key, int value) &#123; this.key = key; this.value = value; &#125; &#125; private DNode head; private DNode tail; private final int capacity; private Map&lt;Integer, DNode&gt; cacheMap; public LRUCache(int capacity) &#123; this.capacity = capacity; //指定容量 防止rehash this.cacheMap = new HashMap&lt;&gt;(capacity * 4 / 3 + 1); &#125; public int get(int key) &#123; int value = -1; if (this.cacheMap.containsKey(key)) &#123; value = this.cacheMap.get(key).value; //更新使用过的缓存 this.updateCache(key, value); &#125; return value; &#125; public void put(int key, int value) &#123; if (this.cacheMap.containsKey(key)) &#123; this.updateCache(key, value); &#125; else &#123; this.addCache(key, value); &#125; &#125; private void addCache(int key, int value) &#123; DNode cache = new DNode(key, value); int size = this.cacheMap.size(); if (size == 0) &#123;//缓存为空 this.head = cache; this.tail = cache; &#125; else &#123;//缓存不为空 this.tail.next = cache; cache.prev = this.tail; this.tail = cache; if (size == this.capacity) &#123;//缓存已满 this.cacheMap.remove(this.head.key); this.head = this.head.next; this.head.prev.next = null; this.head.prev = null; &#125; &#125; this.cacheMap.put(key, cache); &#125; private void updateCache(int key, int value) &#123; DNode cache = this.cacheMap.get(key); cache.value = value; if (cache == this.tail) &#123;//缓存在尾部 return; &#125; if (cache == this.head) &#123;//缓存在头部且非尾部 //从链表取出 this.head = this.head.next; this.head.prev = null; cache.next = null; //放入尾部 this.tail.next = cache; cache.prev = this.tail; this.tail = cache; &#125; else &#123;//缓存在非头部且非尾部 //从链表取出 cache.prev.next = cache.next; cache.next.prev = cache.prev; cache.next = null; //放入尾部 this.tail.next = cache; cache.prev = this.tail; this.tail = cache; &#125; &#125;&#125; 方法二LinkedHashMap类实现了Map接口，内部维护了一个双向链表，具有可预知的迭代顺序(默认为插入顺序)。 1234567891011121314151617181920212223public class LRUCache extends LinkedHashMap&lt;Integer, Integer&gt; &#123; private final int CAPACITY; public LRUCache(int capacity) &#123; //accessOrder: true-访问顺序, false-插入顺序 super(capacity * 4 / 3 + 1, 0.75f, true); CAPACITY = capacity; &#125; //每次添加新条目时自动删除最旧的条目 @Override protected boolean removeEldestEntry(Map.Entry&lt;Integer, Integer&gt; eldest) &#123; return size() &gt; CAPACITY; &#125; public int get(int key) &#123; return getOrDefault(key, -1); &#125; public void set(int key, int value) &#123; put(key, value); &#125;&#125;]]></content>
+      <categories>
+        <category>-leetcode</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[日语动词]]></title>
+    <url>%2F2019%2F06%2Fjapanese-verb%2F</url>
+    <content type="text"><![CDATA[日语动词分类及变化基础 五十音 あ段：あかさたなはまやらわ い段：いきしちにひみ り う段：うくすつぬふむゆる え段：えけせてねへめ れ お段：おこそとのほもよろを 分类 一类动词(五段动词)う段结尾 二类动词(一段动词)る结尾，倒数第二个为い段或え段小部分动词符合该规律但实为一类动词，如 帰る、限る、握る 等 三类动词(サ变动词、カ变动词)サ变：する、词干+するカ变：来る(くる) 变形基本形/原形/辞书形略 ます形 一类：う段 → い段 + ます 二类：る → ます 三类：する → します、来る → きます て形 一类：うつる → って、く/ぐ → いて/いで、ぬぶむ → んで、す → して特殊：行く → 行って 二类：る → て 三类：する → して、来る → きて た形参考て形，て/で → た/だ ない形 一类：う段 → あ段(う → わ) + ない 二类：る → ない 三类：する → しない，来る → こない 命令形 一类：う段 → え段 二类：る → ろ 三类：する → しろ、来る → こい 意志形 一类：う段 → お段长音 二类：る → よう 三类：する → しよう、来る → きよう ば形 一类：う段 → え段 + ば 二类：る → れば 三类：する → すれば、来る → くれば 可能形 一类：う段 → え段 + る 二类：る → られる 三类：する → できる、来る → こられる 被动形 一类：う段 → あ段(う → わ) + れる 二类：る → られる 三类：する → される、来る → こられる 使役形 一类：う段 → あ段(う → わ) + せる 二类：る → させる 三类：する → させる、来る → こさせる 使役被动形 一类：う段 → あ段(う → わ) + される 二类：る → させられる 三类：する → させられる、来る → こさせられる]]></content>
+      <categories>
+        <category>-日语</category>
+      </categories>
+  </entry>
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <url>%2F2019%2F06%2Fhello-world%2F</url>
+    <content type="text"><![CDATA[Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick StartCreate a new post1$ hexo new "My New Post" More info: Writing Run server1$ hexo server More info: Server Generate static files1$ hexo generate More info: Generating Deploy to remote sites1$ hexo deploy More info: Deployment]]></content>
+  </entry>
+</search>
